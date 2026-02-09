@@ -19,7 +19,7 @@ export default function App() {
 
   const fetchImages = async () => {
     try {
-      const res = await fetch("/api/images"); // backend endpoint
+      const res = await fetch("/api/images");
       const data = await res.json();
       setImages(data);
     } catch (err) {
@@ -101,11 +101,19 @@ export default function App() {
               animate={{ opacity: 1, scale: 1 }}
             >
               <Card className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition">
-                <img
-                  src={`/uploads/${image.filename}`}
-                  alt={image.filename}
-                  className="w-full h-48 object-cover"
-                />
+                {image.filename.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                  <video 
+                    src={`/uploads/${image.filename}`} 
+                    controls 
+                    className="w-full h-48 object-cover"
+                  />
+                ) : (
+                  <img
+                    src={`/uploads/${image.filename}`}
+                    alt={image.filename}
+                    className="w-full h-48 object-cover"
+                  />
+                )}
                 <div className="p-4">
                   <p className="text-sm text-gray-600">
                     Source: {image.source}
