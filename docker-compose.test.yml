@@ -1,0 +1,49 @@
+# docker-compose.test.yml
+# to run tests in the backend and frontend using Docker Compose.
+# Usage: docker-compose -f docker-compose.test.yml run backend-tests
+#        docker-compose -f docker-compose.test.yml run frontend-tests
+
+services:
+  backend-tests:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: >
+      sh -c "pip install pytest pytest-asyncio httpx pytest-cov pillow --break-system-packages &&
+             pytest --cov=src/app --cov-report=term-missing -v"
+    environment:
+      - PYTHONPATH=/app
+
+  backend-tests-watch:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: >
+      sh -c "pip install pytest pytest-asyncio httpx pytest-cov pillow pytest-watch --break-system-packages &&
+             ptw -- -v"
+    environment:
+      - PYTHONPATH=/app
+
+  frontend-tests:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    command: npm test
+
+  frontend-tests-ui:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    ports:
+      - "51204:51204"
+    command: npm run test:ui -- --open

@@ -1,37 +1,78 @@
 import os
 import json
 from fastapi import UploadFile
+from pathlib import Path
 
 
-UPLOAD_DIR = "/storage/uploads"
-METADATA_FILE = os.path.join(UPLOAD_DIR, "metadata.json")
+def get_upload_dir():
+    """Get upload directory from environment or use default"""
+    return os.getenv("UPLOAD_PATH", "/storage/uploads")
 
 
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+def get_metadata_file():
+    """Get metadata file path"""
+    return os.path.join(get_upload_dir(), "metadata.json")
 
 
-async def save_file(file: UploadFile, source: str, copyright: str):
-    path = os.path.join(UPLOAD_DIR, file.filename)
-    with open(path, "wb") as buffer:
-        buffer.write(await file.read())
-
-    metadata = []
-    if os.path.exists(METADATA_FILE):
-        with open(METADATA_FILE, "r") as f:
-            metadata = json.load(f)
-
-    metadata.append(
-        {"filename": file.filename, "source": source, "copyright": copyright}
-    )
-
-    with open(METADATA_FILE, "w") as f:
+def save_file(file: UploadFile, source: str, copyright: str):
+    """Save uploaded file with metadata"""
+    upload_dir = get_upload_dir()
+    os.makedirs(upload_dir, exist_ok=True)  # Créer seulement quand nécessaire
+    
+    file_path = os.path.join(upload_dir, file.filename)
+    
+    with open(file_path, "wb") as f:
+        f.write(file.file.read())
+    
+    # Save metadata
+    metadata_file = get_metadata_file()
+    metadata = {}
+    
+    if os.path.exists(metadata_file):
+        with open(metadata_file, "r") as f:
+            try:
+                metadata = json.load(f)
+            except json.JSONDecodeError:
+                metadata = {}
+    
+    metadata[file.filename] = {
+        "source": source,
+        "copyright": copyright
+    }
+    
+    with open(metadata_file, "w") as f:
         json.dump(metadata, f, indent=2)
-
-    return file.filename
+    
+    return {"filename": file.filename, "source": source, "copyright": copyright}
 
 
 def list_files():
-    if not os.path.exists(METADATA_FILE):
+    """List all uploaded files with metadata"""
+    upload_dir = get_upload_dir()
+    
+    if not os.path.exists(upload_dir):
         return []
-    with open(METADATA_FILE, "r") as f:
-        return json.load(f)
+    
+    metadata_file = get_metadata_file()
+    metadata = {}
+    
+    if os.path.exists(metadata_file):
+        with open(metadata_file, "r") as f:
+            try:
+                metadata = json.load(f)
+            except json.JSONDecodeError:
+                metadata = {}
+    
+    files = []
+    for filename in os.listdir(upload_dir):
+        if filename == "metadata.json":
+            continue
+        
+        file_metadata = metadata.get(filename, {})
+        files.append({
+            "filename": filename,
+            "source": file_metadata.get("source", ""),
+            "copyright": file_metadata.get("copyright", "")
+        })
+    
+    return files

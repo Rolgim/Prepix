@@ -1,0 +1,15 @@
+FROM node:20
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install ALL dependencies (including dev)
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Default command
+CMD ["npm", "test"]

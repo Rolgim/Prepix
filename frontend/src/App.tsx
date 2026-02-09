@@ -1,4 +1,3 @@
-// frontend/src/App.tsx
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
@@ -20,7 +19,9 @@ export default function App() {
   const fetchImages = async () => {
     try {
       const res = await fetch("/api/images");
-      const data = await res.json();
+      if (!res.ok) throw new Error("Failed request");
+
+      const data: Image[] = await res.json();
       setImages(data);
     } catch (err) {
       console.error("Failed to fetch images", err);
@@ -41,15 +42,16 @@ export default function App() {
     formData.append("copyright", copyright);
 
     try {
-      await fetch("/api/upload", {
+      const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
+      if (!res.ok) throw new Error("Upload failed");
 
       setFile(null);
       setSource("");
       setCopyright("");
-      fetchImages();
+      await fetchImages();
     } catch (err) {
       console.error("Upload failed", err);
     }
@@ -69,18 +71,28 @@ export default function App() {
         <Card className="shadow-lg rounded-2xl">
           <CardContent className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* File input */}
+              <label htmlFor="file-input">File</label>
               <Input
+                id="file-input"
                 type="file"
+                placeholder="Choose file"
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)}
               />
 
+              {/* Source input */}
+              <label htmlFor="source-input">Source</label>
               <Input
+                id="source-input"
                 placeholder="Source"
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
               />
 
+              {/* Copyright input */}
+              <label htmlFor="copyright-input">Copyright</label>
               <Input
+                id="copyright-input"
                 placeholder="Copyright"
                 value={copyright}
                 onChange={(e) => setCopyright(e.target.value)}
@@ -93,18 +105,20 @@ export default function App() {
           </CardContent>
         </Card>
 
+        {/* Gallery */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {images.map((image, index) => (
+          {images.map((image) => (
             <motion.div
-              key={index}
+              key={image.filename}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
             >
               <Card className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition">
                 {image.filename.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                  <video 
-                    src={`/uploads/${image.filename}`} 
-                    controls 
+                  <video
+                    src={`/uploads/${image.filename}`}
+                    controls
+                    aria-label={image.filename}
                     className="w-full h-48 object-cover"
                   />
                 ) : (
@@ -115,12 +129,8 @@ export default function App() {
                   />
                 )}
                 <div className="p-4">
-                  <p className="text-sm text-gray-600">
-                    Source: {image.source}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Copyright: {image.copyright}
-                  </p>
+                  <p className="text-sm text-gray-600">Source: {image.source}</p>
+                  <p className="text-sm text-gray-600">Copyright: {image.copyright}</p>
                 </div>
               </Card>
             </motion.div>

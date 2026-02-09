@@ -1,8 +1,20 @@
 [project]
-name = "image-backend"
+name = "euclid-backend"
 version = "0.1.0"
+description = "Euclid Pretty Pics Portal Backend"
+requires-python = ">=3.12"
+
 dependencies = [
     "fastapi",
     "uvicorn",
     "python-multipart"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.24.0",
+    "pytest-cov>=4.1.0",
+    "pillow>=10.0.0"
 ]
