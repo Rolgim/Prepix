@@ -94,25 +94,28 @@ describe('App Component', () => {
       {
         filename: 'video.mp4',
         source: 'Test',
-        copyright: 'Test'
-      }
+        copyright: 'Test',
+      },
     ];
-
+  
     global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: true,
-        json: async () => mockImages
+        json: async () => mockImages,
       })
     ) as any;
-
+  
     render(<App />);
-
+  
     await waitFor(() => {
-      const video = screen.queryByRole('img', { hidden: true }) || 
-                   document.querySelector('video');
+      const videos = Array.from(document.querySelectorAll('video'));
+      expect(videos.length).toBeGreaterThan(0);
+  
+      const video = videos.find((v) => v.src.includes('video.mp4'));
       expect(video).toBeTruthy();
     });
   });
+  
 
   it('renders image elements for image files', async () => {
     const mockImages = [

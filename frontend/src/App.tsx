@@ -60,13 +60,27 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-5xl mx-auto space-y-8">
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-3xl font-bold text-center"
-        >
-          Euclid Pretty Pics Portal
-        </motion.h1>
+      <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-center justify-between max-w-5xl mx-auto px-4"
+    >
+      <img
+        src="/Euclid_consortium_logo.png"
+        alt="Left Logo"
+        className="h-18 w-auto flex-shrink-0"
+      />
+
+      <h1 className="text-3xl font-bold text-center flex-1 mx-1 truncate">
+        Euclid Pretty Pics Portal
+      </h1>
+
+      <img
+        src="/Euclid_logo.png"
+        alt="Right Logo"
+        className="h-20 w-auto flex-shrink-0"
+      />
+    </motion.div>
 
         <Card className="shadow-lg rounded-2xl">
           <CardContent className="p-6">
