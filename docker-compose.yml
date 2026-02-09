@@ -3,6 +3,9 @@ services:
     build: ./backend
     volumes:
       - ./storage/uploads:/storage/uploads
+      - ./backend/data:/app/data  # ← AJOUTER CETTE LIGNE
+    env_file:
+      - ./backend/.env  # ← AJOUTER CETTE LIGNE
     expose:
       - "8000"
 
