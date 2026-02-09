@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./storage/uploads:/storage/uploads
+    expose:
+      - "8000"
+
+  nginx:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./storage/uploads:/storage/uploads
+    depends_on:
+      - backend
