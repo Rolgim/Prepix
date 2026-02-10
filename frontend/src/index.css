@@ -4,6 +4,7 @@
 :root {
   --bg-primary: rgb(243, 244, 246);
   --bg-secondary: rgb(255, 255, 255);
+  --bg-tertiary: rgba(255, 255, 255, 0.795);
   --bg-card: rgb(255, 255, 255);
   --text-primary: rgb(17, 24, 39);
   --text-secondary: rgb(107, 114, 128);
@@ -13,6 +14,7 @@
 .dark {
   --bg-primary: rgb(17, 24, 39);
   --bg-secondary: rgb(31, 41, 55);
+  --bg-tertiary: rgba(31, 41, 55, 0.795);
   --bg-card: rgb(31, 41, 55);
   --text-primary: rgb(249, 250, 251);
   --text-secondary: rgb(209, 213, 219);

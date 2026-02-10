@@ -56,45 +56,33 @@ export default function App() {
       console.error("Upload failed", err);
     }
   };
-
+  
   return (
-    <div className="min-h-screen p-8">  
-      <div className="max-w-5xl mx-auto space-y-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between"
-        >
-          <img
-            src="/Euclid_consortium_logo.png"
-            alt="Euclid Consortium Logo"
-            className="h-18 w-auto flex-shrink-0"
-          />
-
-          <h1 
-            className="text-3xl font-bold text-center flex-1 mx-4 truncate"
+    <div className="min-h-screen flex" style={{ backgroundColor: 'var(--bg-primary)' }}>
+  
+      {/* SIDEBAR CONTROLS */}
+      <div
+        className="w-96 p-4 flex flex-col gap-6"
+        style={{ backgroundColor: 'var(--bg-tertiary)' }}
+      >
+        
+        <div className="flex items-center justify-between">
+          {/* Title */}
+          <h1
+            className="text-2xl font-bold text-center flex-1"
             style={{ color: 'var(--text-primary)' }}
           >
             Euclid Pretty Pics Portal
           </h1>
-
-          <div className="flex items-center gap-4">
-            <DarkModeToggle />
-            <img
-              src="/Euclid_logo.png"
-              alt="Euclid Logo"
-              className="h-20 w-auto flex-shrink-0"
-            />
-          </div>
-        </motion.div>
-
+          <DarkModeToggle />
+        </div>
+  
         {/* Upload form */}
-        <Card 
+        <Card
           className="shadow-lg rounded-2xl border"
-          style={{ 
-            backgroundColor: 'var(--bg-card)', 
-            borderColor: 'var(--border-color)' 
+          style={{
+            backgroundColor: 'var(--bg-card)',
+            borderColor: 'var(--border-color)'
           }}
         >
           <CardContent className="p-6">
@@ -161,7 +149,7 @@ export default function App() {
                   bg-gradient-to-r from-blue-300 to-indigo-300
                   hover:from-blue-400 hover:to-indigo-400
                   text-white font-semibold py-2.5 shadow-md
-                  hover:shadow-lg
+                  hover:shadow-lg hover:scale-102
                   transition-all duration-200 active:scale-[0.98]">
                 Upload
               </Button>
@@ -170,7 +158,18 @@ export default function App() {
           </CardContent>
         </Card>
 
-        {/* Gallery */}
+        {/* Footer */}
+        <div
+          className="flex items-center justify-between mt-auto"
+        >
+          <img src="/Euclid_consortium_logo.png" className="h-14" />  
+          <img src="/Euclid_logo.png" className="h-16" />
+        </div>
+  
+      </div>
+  
+      {/* MAIN GALLERY */}
+      <div className="flex-1 p-6 overflow-y-auto">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {images.map((image) => (
             <motion.div
@@ -178,18 +177,17 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
             >
-              <Card 
+              <Card
                 className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition border"
-                style={{ 
-                  backgroundColor: 'var(--bg-card)', 
-                  borderColor: 'var(--border-color)' 
+                style={{
+                  backgroundColor: 'var(--bg-card)',
+                  borderColor: 'var(--border-color)'
                 }}
               >
                 {image.filename.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                   <video
                     src={`/uploads/${image.filename}`}
                     controls
-                    aria-label={image.filename}
                     className="w-full h-48 object-cover"
                   />
                 ) : (
@@ -199,6 +197,7 @@ export default function App() {
                     className="w-full h-48 object-cover"
                   />
                 )}
+  
                 <div className="p-4">
                   <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                     Source: {image.source}
@@ -212,6 +211,7 @@ export default function App() {
           ))}
         </div>
       </div>
+  
     </div>
   );
 }
