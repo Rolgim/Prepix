@@ -7,11 +7,13 @@ import { motion } from "framer-motion";
  * @property {string} filename - The name of the media file (image or video).
  * @property {string} source - The source of the media.
  * @property {string} copyright - The copyright information for the media.
+ * @property {() => void} [onClick] - Optional click handler.
  */
 interface ImageCardProps {
   filename: string;
   source: string;
   copyright: string;
+  onClick?: () => void;
 }
 
 /**
@@ -22,7 +24,7 @@ interface ImageCardProps {
  * @param {ImageCardProps} props - The props for the component.
  * @returns {JSX.Element} A card element with the media and its details.
  */
-export function ImageCard({ filename, source, copyright }: ImageCardProps) {
+export function ImageCard({ filename, source, copyright, onClick }: ImageCardProps) {
   // Simple regex to detect common video file extensions.
   const isVideo = filename.match(/\.(mp4|webm|ogg|mov)$/i);
 
@@ -30,6 +32,8 @@ export function ImageCard({ filename, source, copyright }: ImageCardProps) {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
+      onClick={onClick}
+      className="cursor-pointer"
     >
       <Card
         className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition border"

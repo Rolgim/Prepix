@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { ImageCard } from "./ImageCard";
+import { ExpandedImageView } from "./ExpandedImageView";
 
 /**
  * @interface Image
@@ -29,6 +31,16 @@ interface ImageGalleryProps {
  * @returns {JSX.Element} A grid of ImageCard components or a state message.
  */
 export function ImageGallery({ images, isLoading }: ImageGalleryProps) {
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+
+  const handleImageClick = (image: Image) => {
+    setSelectedImage(image);
+  };
+
+  const handleClose = () => {
+    setSelectedImage(null);
+  };
+
   // Display a loading message if data is being fetched.
   if (isLoading) {
     return (
@@ -51,15 +63,24 @@ export function ImageGallery({ images, isLoading }: ImageGalleryProps) {
 
   // Render the grid of images using the ImageCard component.
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {images.map((image) => (
-        <ImageCard
-          key={image.filename}
-          filename={image.filename}
-          source={image.source}
-          copyright={image.copyright}
+    <>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {images.map((image) => (
+          <ImageCard
+            key={image.filename}
+            filename={image.filename}
+            source={image.source}
+            copyright={image.copyright}
+            onClick={() => handleImageClick(image)}
+          />
+        ))}
+      </div>
+      {selectedImage && (
+        <ExpandedImageView
+          image={selectedImage}
+          onClose={handleClose}
         />
-      ))}
-    </div>
+      )}
+    </>
   );
 }
