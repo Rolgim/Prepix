@@ -51,7 +51,7 @@ describe('App Component', () => {
     const mockImages = [
       {
         filename: 'test1.png',
-        source: 'NASA',
+        source: 'Gaia',
         copyright: '© ESA 2026'
       },
       {
@@ -71,7 +71,7 @@ describe('App Component', () => {
     render(<App />);
 
     await waitFor(() => {
-      expect(screen.getByText('Source: NASA')).toBeInTheDocument();
+      expect(screen.getByText('Source: Gaia')).toBeInTheDocument();
       expect(screen.getByText('Source: Euclid')).toBeInTheDocument();
     });
   });
