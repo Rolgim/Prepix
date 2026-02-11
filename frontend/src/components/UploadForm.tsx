@@ -6,11 +6,11 @@ import { Input } from "./Input";
 /**
  * @interface UploadFormProps
  * @description Defines the props for the UploadForm component.
- * @property {(file: File, source: string, copyright: string) => Promise<boolean>} onUpload - A callback function that is triggered on form submission. It should handle the file upload logic and return a promise that resolves to a boolean indicating success.
+ * @property {(file: File, source: string, copyright: string, datasetRelease: string, description: string, dataProcessingStages: string, coordinates: string, isPublic: boolean) => Promise<boolean>} onUpload - A callback function that is triggered on form submission. It should handle the file upload logic and return a promise that resolves to a boolean indicating success.
  * @property {boolean} [isLoading] - An optional boolean to indicate if an upload is currently in progress.
  */
 interface UploadFormProps {
-  onUpload: (file: File, source: string, copyright: string) => Promise<boolean>;
+  onUpload: (file: File, source: string, copyright: string, datasetRelease: string, description: string, dataProcessingStages: string, coordinates: string, isPublic: boolean) => Promise<boolean>;
   isLoading?: boolean;
 }
 
@@ -25,6 +25,12 @@ export function UploadForm({ onUpload, isLoading }: UploadFormProps) {
   const [file, setFile] = useState<File | null>(null);
   const [source, setSource] = useState("");
   const [copyright, setCopyright] = useState("");
+  const [datasetRelease, setDatasetRelease] = useState("");
+  const [description, setDescription] = useState("");
+  const [dataProcessingStages, setDataProcessingStages] = useState("");
+  const [coordinates, setCoordinates] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+
 
   /**
    * @function handleSubmit
@@ -36,13 +42,19 @@ export function UploadForm({ onUpload, isLoading }: UploadFormProps) {
     e.preventDefault();
     if (!file) return;
 
-    const success = await onUpload(file, source, copyright);
+    const success = await onUpload(file, source, copyright, datasetRelease, description, dataProcessingStages, coordinates, isPublic);
     
     // If the upload was successful, reset the form to its initial state.
     if (success) {
       setFile(null);
       setSource("");
       setCopyright("");
+      setDatasetRelease("");
+      setDescription("");
+      setDataProcessingStages("");
+      setCoordinates("");
+      setIsPublic(false);
+      
       // A simple way to clear the file input's displayed value.
       const fileInput = document.getElementById('file-input') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
@@ -117,6 +129,103 @@ export function UploadForm({ onUpload, isLoading }: UploadFormProps) {
               borderColor: 'var(--border-color)' 
             }}
           />
+
+          <label 
+            htmlFor="dataset-release-input" 
+            className="block text-sm font-medium"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            Dataset Release
+          </label>
+          <Input
+            id="dataset-release-input"
+            placeholder="Dataset Release"
+            value={datasetRelease}
+            onChange={(e) => setDatasetRelease(e.target.value)}
+            disabled={isLoading}
+            style={{ 
+              backgroundColor: 'var(--bg-secondary)', 
+              color: 'var(--text-primary)', 
+              borderColor: 'var(--border-color)' 
+            }}
+          />
+
+          <label 
+            htmlFor="description-input" 
+            className="block text-sm font-medium"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            Description
+          </label>
+          <Input
+            id="description-input"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            disabled={isLoading}
+            style={{ 
+              backgroundColor: 'var(--bg-secondary)', 
+              color: 'var(--text-primary)', 
+              borderColor: 'var(--border-color)' 
+            }}
+          />
+
+          <label 
+            htmlFor="data-processing-stages-input" 
+            className="block text-sm font-medium"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            Data Processing Stages
+          </label>
+          <Input
+            id="data-processing-stages-input"
+            placeholder="Data Processing Stages"
+            value={dataProcessingStages}
+            onChange={(e) => setDataProcessingStages(e.target.value)}
+            disabled={isLoading}
+            style={{ 
+              backgroundColor: 'var(--bg-secondary)', 
+              color: 'var(--text-primary)', 
+              borderColor: 'var(--border-color)' 
+            }}
+          />
+
+          <label 
+            htmlFor="coordinates-input" 
+            className="block text-sm font-medium"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            Coordonnées
+          </label>
+          <Input
+            id="coordinates-input"
+            placeholder="Coordonnées"
+            value={coordinates}
+            onChange={(e) => setCoordinates(e.target.value)}
+            disabled={isLoading}
+            style={{ 
+              backgroundColor: 'var(--bg-secondary)', 
+              color: 'var(--text-primary)', 
+              borderColor: 'var(--border-color)' 
+            }}
+          />
+          <div className="flex items-center justify-between">
+            <label 
+              htmlFor="public-private-checkbox" 
+              className="block text-sm font-medium"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              Public data
+            </label>
+            <input
+              id="public-private-checkbox"
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+              disabled={isLoading}
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            />
+          </div>
 
           <Button
             type="submit"

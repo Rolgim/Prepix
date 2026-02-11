@@ -2,7 +2,7 @@ import { DarkModeToggle } from "./DarkModeToggle";
 import { UploadForm } from "./UploadForm";
 
 interface SidebarProps {
-  onUpload: (file: File, source: string, copyright: string) => Promise<boolean>;
+  onUpload: (file: File, source: string, copyright: string, datasetRelease: string, description: string, isPublic: boolean, dataProcessingStages: string, coordinates: string) => Promise<boolean>;
   isLoading?: boolean;
 }
 

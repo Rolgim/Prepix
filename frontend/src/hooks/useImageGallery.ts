@@ -11,6 +11,12 @@ interface Image {
   filename: string;
   source: string;
   copyright: string;
+  dataset_release: string;
+  description: string;
+  public: boolean;
+  registration_date: string;
+  data_processing_stages: string;
+  coordinates: string;
 }
 
 /**
@@ -22,7 +28,7 @@ interface Image {
  * @returns {Image[]} .images - An array of image objects currently in the gallery.
  * @returns {boolean} .isLoading - A boolean indicating if an operation (fetch/upload) is in progress.
  * @returns {string | null} .error - An error message string if an error occurred, otherwise null.
- * @returns {(file: File, source: string, copyright: string) => Promise<boolean>} .uploadImage - An async function to upload a new image.
+ * @returns {(file: File, source: string, copyright: string, datasetRelease: string, description: string, registrationDate: string, dataProcessingStages: string, coordinates: string, isPublic: boolean) => Promise<boolean>} .uploadImage - An async function to upload a new image.
  * @returns {() => Promise<void>} .refreshImages - A function to manually trigger a refresh of the image list.
  */
 export function useImageGallery() {
@@ -60,7 +66,7 @@ export function useImageGallery() {
    * @param {string} copyright - The copyright information for the image.
    * @returns {Promise<boolean>} A promise that resolves to `true` on success and `false` on failure.
    */
-  const uploadImage = async (file: File, source: string, copyright: string) => {
+  const uploadImage = async (file: File, source: string, copyright: string, datasetRelease: string, description: string, registrationDate: string, dataProcessingStages: string, coordinates: string, isPublic: boolean) => {
     setIsLoading(true);
     setError(null);
     
@@ -68,6 +74,12 @@ export function useImageGallery() {
     formData.append("file", file);
     formData.append("source", source);
     formData.append("copyright", copyright);
+    formData.append("dataset_release", datasetRelease);
+    formData.append("description", description);
+    formData.append("registration_date", registrationDate);
+    formData.append("data_processing_stages", dataProcessingStages);
+    formData.append("coordinates", coordinates);
+    formData.append("public", isPublic.toString());
 
     try {
       const res = await fetch("/api/upload", {

@@ -2,6 +2,7 @@ import os
 import json
 from fastapi import UploadFile
 from pathlib import Path
+from datetime import date
 
 
 def get_upload_dir():
@@ -14,8 +15,17 @@ def get_metadata_file():
     return os.path.join(get_upload_dir(), "metadata.json")
 
 
-def save_file(file: UploadFile, source: str, copyright: str):
+def save_file(
+    file: UploadFile,
+    source: str, 
+    copyright: str, 
+    dataset_release: str, 
+    description: str, 
+    public: str, 
+    data_processing_stages: str, 
+    coordinates: str):
     """Save uploaded file with metadata"""
+
     upload_dir = get_upload_dir()
     os.makedirs(upload_dir, exist_ok=True)  # Créer seulement quand nécessaire
     
@@ -37,13 +47,29 @@ def save_file(file: UploadFile, source: str, copyright: str):
     
     metadata[file.filename] = {
         "source": source,
-        "copyright": copyright
+        "copyright": copyright,
+        "datasetRelease": dataset_release,
+        "description": description,
+        "isPublic": public,
+        "dataProcessingStages": data_processing_stages,
+        "coordinates": coordinates,
+        "uploadDate": date.today().isoformat()
     }
     
     with open(metadata_file, "w") as f:
         json.dump(metadata, f, indent=2)
     
-    return {"filename": file.filename, "source": source, "copyright": copyright}
+    return {
+        "filename": file.filename, 
+        "source": source, 
+        "copyright": copyright, 
+        "datasetRelease": dataset_release, 
+        "description": description, 
+        "isPublic": public, 
+        "dataProcessingStages": data_processing_stages, 
+        "coordinates": coordinates,
+        "uploadDate": date.today().isoformat()
+        }
 
 
 def list_files():
@@ -72,7 +98,13 @@ def list_files():
         files.append({
             "filename": filename,
             "source": file_metadata.get("source", ""),
-            "copyright": file_metadata.get("copyright", "")
+            "copyright": file_metadata.get("copyright", ""),
+            "datasetRelease": file_metadata.get("datasetRelease", ""),
+            "description": file_metadata.get("description", ""),
+            "isPublic": file_metadata.get("isPublic", ""),
+            "dataProcessingStages": file_metadata.get("dataProcessingStages", ""),
+            "coordinates": file_metadata.get("coordinates", ""),
+            "uploadDate": file_metadata.get("uploadDate", "")
         })
     
     return files
