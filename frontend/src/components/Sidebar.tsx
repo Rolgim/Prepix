@@ -38,6 +38,11 @@ export function Sidebar({ onUpload, isLoading }: SidebarProps) {
           alt="Euclid" 
           className="h-16" 
         />
+        <img 
+          src="/CNES_logo.png" 
+          alt="CNES" 
+          className="h-16" 
+        />
       </div>
     </div>
   );

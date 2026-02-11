@@ -76,7 +76,7 @@ export function useImageGallery() {
     formData.append("copyright", copyright);
     formData.append("datasetRelease", datasetRelease);
     formData.append("description", description);
-    formData.append("dataProcessingSqtages", dataProcessingStages);
+    formData.append("dataProcessingStages", dataProcessingStages);
     formData.append("coordinates", coordinates);
     formData.append("isPublic", isPublic.toString());
 
