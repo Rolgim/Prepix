@@ -21,6 +21,12 @@ describe('UploadForm Component', () => {
     expect(screen.getByLabelText(/file/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Source')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Copyright')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Dataset Release')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Description')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Data Processing Stages')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Coordinates')).toBeInTheDocument();
+    expect(screen.getByLabelText(/public data/i)).toBeInTheDocument();
+    expect(screen.getByRole('checkbox')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /upload/i })).toBeInTheDocument();
   });
 
@@ -71,12 +77,25 @@ describe('UploadForm Component', () => {
     await user.upload(fileInput, file);
     await user.type(sourceInput, 'Test Source');
     await user.type(copyrightInput, 'Test Copyright');
+    await user.type(screen.getByPlaceholderText('Dataset Release'), 'DR Test');
+    await user.type(screen.getByPlaceholderText('Description'), 'Test Description');
+    await user.type(screen.getByPlaceholderText('Data Processing Stages'), 'Test Stages');
+    await user.type(screen.getByPlaceholderText('Coordinates'), 'Test Coordinates');
+    await user.click(screen.getByLabelText(/public data/i));
 
     // Simulate form submission.
     const submitButton = screen.getByRole('button', { name: /upload/i });
     await user.click(submitButton);
 
-    expect(mockOnUpload).toHaveBeenCalledWith(file, 'Test Source', 'Test Copyright');
+    expect(mockOnUpload).toHaveBeenCalledWith(
+      file, 
+      'Test Source', 
+      'Test Copyright', 
+      'DR Test', 
+      'Test Description', 
+      'Test Stages', 
+      'Test Coordinates', 
+      true);
   });
 
   /**

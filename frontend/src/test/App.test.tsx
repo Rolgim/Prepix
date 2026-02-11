@@ -58,6 +58,12 @@ describe('App Component - Integration Tests', () => {
     await waitFor(() => {
       expect(screen.getByPlaceholderText('Source')).toBeInTheDocument();
       expect(screen.getByPlaceholderText('Copyright')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Dataset Release')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Description')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Data Processing Stages')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Coordinates')).toBeInTheDocument();
+      expect(screen.getByLabelText(/public data/i)).toBeInTheDocument();
+      expect(screen.getByRole('checkbox')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /upload/i })).toBeInTheDocument();
     });
   });
@@ -70,7 +76,12 @@ describe('App Component - Integration Tests', () => {
       {
         filename: 'test1.png',
         source: 'Gaia',
-        copyright: '© ESA 2026'
+        copyright: '© ESA 2026',
+        datasetRelease: "DR3",
+        description: "Test Description 1",
+        dataProcessingStages: "Test Stages 1",
+        coordinates: "Test Coordinates 1",
+        public: true
       }
     ];
 
@@ -101,7 +112,16 @@ describe('App Component - Integration Tests', () => {
     global.fetch = vi.fn((url) => {
       if (url === '/api/upload') {
         // After a successful upload, the "database" is updated.
-        imagesList = [{ filename: 'new.png', source: 'Test Source', copyright: 'Test Copyright' }];
+        imagesList = [{
+          filename: 'new.png', 
+          source: 'Test Source', 
+          copyright: 'Test Copyright',
+          datasetRelease: 'DR Test',
+          description: 'Test Description',
+          dataProcessingStages: 'Test Stages',
+          coordinates: 'Test Coordinates',
+          public: true}
+        ];
         return Promise.resolve({ ok: true, json: async () => ({ success: true }) });
       }
       // The next fetch to /api/images will return the updated list.
@@ -116,6 +136,11 @@ describe('App Component - Integration Tests', () => {
     const copyrightInput = screen.getByPlaceholderText('Copyright');
     await user.type(sourceInput, 'Test Source');
     await user.type(copyrightInput, 'Test Copyright');
+    await user.type(screen.getByPlaceholderText('Dataset Release'), 'DR Test');
+    await user.type(screen.getByPlaceholderText('Description'), 'Test Description');
+    await user.type(screen.getByPlaceholderText('Data Processing Stages'), 'Test Stages');
+    await user.type(screen.getByPlaceholderText('Coordinates'), 'Test Coordinates');
+    await user.click(screen.getByLabelText(/public data/i));
 
     // Simulate file selection.
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;

@@ -199,7 +199,7 @@ export function UploadForm({ onUpload, isLoading }: UploadFormProps) {
           </label>
           <Input
             id="coordinates-input"
-            placeholder="Coordonnées"
+            placeholder="Coordinates"
             value={coordinates}
             onChange={(e) => setCoordinates(e.target.value)}
             disabled={isLoading}

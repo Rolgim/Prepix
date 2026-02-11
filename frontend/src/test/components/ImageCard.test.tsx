@@ -19,7 +19,7 @@ describe('ImageCard Component', () => {
       <ImageCard 
         filename="test.png" 
         source="NASA" 
-        copyright="© 2026" 
+        copyright="© 2026"
       />
     );
 

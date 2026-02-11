@@ -46,5 +46,10 @@ def sample_metadata():
     """Sample metadata for uploads"""
     return {
         "source": "Test Source",
-        "copyright": "Test Copyright 2026"
+        "copyright": "Test Copyright 2026",
+        "datasetRelease": "Test Release",
+        "description": "Test Description",
+        "dataProcessingStages": "Test Stages",
+        "coordinates": "Test Coordinates",
+        "isPublic": "false"
     }

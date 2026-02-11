@@ -10,12 +10,12 @@ async def upload_image(
     file: UploadFile = File(...),
     source: str = Form(...),
     copyright: str = Form(...),
-    dataset_release: str = Form(...),
+    dataset_release: str = Form(..., alias= "datasetRelease"),
     description: str = Form(...),
-    public: str = Form(...),
-    data_processing_stages: str = Form(...),
+    data_processing_stages: str = Form(..., alias="dataProcessingStages"),
     coordinates: str = Form(...),
-):
+    public: str = Form(..., alias="isPublic")
+    ):
     result = await run_in_threadpool(
         save_file,
         file,
@@ -23,8 +23,8 @@ async def upload_image(
         copyright,
         dataset_release,
         description,
-        public,
         data_processing_stages,
         coordinates,
+        public
     )
     return result

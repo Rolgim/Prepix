@@ -21,9 +21,10 @@ def save_file(
     copyright: str, 
     dataset_release: str, 
     description: str, 
-    public: str, 
     data_processing_stages: str, 
-    coordinates: str):
+    coordinates: str,
+    public: str
+    ):
     """Save uploaded file with metadata"""
 
     upload_dir = get_upload_dir()
@@ -50,9 +51,9 @@ def save_file(
         "copyright": copyright,
         "datasetRelease": dataset_release,
         "description": description,
-        "isPublic": public,
         "dataProcessingStages": data_processing_stages,
         "coordinates": coordinates,
+        "isPublic": public,
         "uploadDate": date.today().isoformat()
     }
     
@@ -65,9 +66,9 @@ def save_file(
         "copyright": copyright, 
         "datasetRelease": dataset_release, 
         "description": description, 
-        "isPublic": public, 
         "dataProcessingStages": data_processing_stages, 
         "coordinates": coordinates,
+        "isPublic": public, 
         "uploadDate": date.today().isoformat()
         }
 
@@ -101,9 +102,9 @@ def list_files():
             "copyright": file_metadata.get("copyright", ""),
             "datasetRelease": file_metadata.get("datasetRelease", ""),
             "description": file_metadata.get("description", ""),
-            "isPublic": file_metadata.get("isPublic", ""),
             "dataProcessingStages": file_metadata.get("dataProcessingStages", ""),
             "coordinates": file_metadata.get("coordinates", ""),
+            "isPublic": file_metadata.get("isPublic", ""),
             "uploadDate": file_metadata.get("uploadDate", "")
         })
     

@@ -38,8 +38,21 @@ def test_get_images_after_upload(client, sample_image, sample_metadata):
     assert "filename" in image
     assert "source" in image
     assert "copyright" in image
+    assert "datasetRelease" in image
+    assert "description" in image
+    assert "dataProcessingStages" in image
+    assert "coordinates" in image
+    assert "isPublic" in image
+    assert "uploadDate" in image
+    
     assert image["source"] == sample_metadata["source"]
     assert image["copyright"] == sample_metadata["copyright"]
+    assert image["datasetRelease"] == sample_metadata["datasetRelease"]
+    assert image["description"] == sample_metadata["description"]
+    assert image["dataProcessingStages"] == sample_metadata["dataProcessingStages"]
+    assert image["coordinates"] == sample_metadata["coordinates"]
+    assert image["isPublic"] == sample_metadata["isPublic"]
+    assert image["uploadDate"] is not None
 
 
 def test_get_images_multiple_uploads(client, sample_metadata):
@@ -52,7 +65,12 @@ def test_get_images_multiple_uploads(client, sample_metadata):
             files={"file": (f"test_{i}.png", file_content, "image/png")},
             data={
                 "source": f"Source {i}",
-                "copyright": f"Copyright {i}"
+                "copyright": f"Copyright {i}",
+                "datasetRelease": f"DR {i}",
+                "description": f"Description {i}",
+                "dataProcessingStages":"VIS/NIR/MER",
+                "coordinates": f"tile_550{i}",
+                "isPublic": "false",
             }
         )
     
@@ -84,7 +102,17 @@ def test_images_return_correct_structure(client, sample_image, sample_metadata):
     assert len(data) > 0
     
     image = data[0]
-    required_fields = ["filename", "source", "copyright"]
+    required_fields = [
+        "filename", 
+        "source", 
+        "copyright", 
+        "datasetRelease", 
+        "description", 
+        "dataProcessingStages",
+        "coordinates", 
+        "isPublic",
+        "uploadDate"
+        ]
     for field in required_fields:
         assert field in image, f"Missing required field: {field}"
 
@@ -98,7 +126,15 @@ def test_images_ordering(client):
         response = client.post(
             "/upload",
             files={"file": (f"test_{i}.png", file_content, "image/png")},
-            data={"source": f"Source {i}", "copyright": f"Copyright {i}"}
+            data={
+                "source": f"Source {i}",
+                "copyright": f"Copyright {i}",
+                "datasetRelease": f"DR {i}",
+                "description": f"Description {i}",
+                "dataProcessingStages":"VIS/NIR/MER",
+                "coordinates": f"tile_550{i}",
+                "isPublic": "false",
+                }
         )
         filenames.append(response.json()["filename"])
     

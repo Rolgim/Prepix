@@ -64,7 +64,7 @@ describe('useImageGallery Hook', () => {
       if (url === '/api/images') {
         return Promise.resolve({
           ok: true,
-          json: async () => [{ filename: 'uploaded.png', source: 'Test', copyright: 'Test' }]
+          json: async () => [{ filename: 'uploaded.png', source: 'Test', copyright: 'Test', datasetRelease: "DR Test", description: "Test Description", dataProcessingStages: "Test Stages", coordinates: "Test Coordinates", isPublic: true }]
         });
       }
       return Promise.resolve({ ok: true, json: async () => [] });
@@ -74,14 +74,14 @@ describe('useImageGallery Hook', () => {
     
     // Perform the upload action within an `act` block to correctly handle asynchronous state updates in React.
     await act(async () => {
-      await result.current.uploadImage(file, 'Test', 'Test');
+      await result.current.uploadImage(file, 'Test', 'Test', 'DR Test', 'Test Description', 'Test Registration Date', 'Test Stages', 'Test Coordinates', true);
     });
 
     // `waitFor` asserts that the image list is eventually updated with the new image.
     await waitFor(() => {
       expect(result.current.images).toHaveLength(1);
       expect(result.current.images[0].filename).toBe('uploaded.png');
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.isLoading).toBe(false);      
     });
   });
 
@@ -105,7 +105,7 @@ describe('useImageGallery Hook', () => {
     
     // Perform the upload action and assert that it returns `false` to indicate failure.
     await act(async () => {
-      const success = await result.current.uploadImage(file, 'Test', 'Test');
+      const success = await result.current.uploadImage(file, 'Test', 'Test', 'DR Test', 'Test Description', 'Test Registration Date', 'Test Stages', 'Test Coordinates', true);
       expect(success).toBe(false);
     });
 
