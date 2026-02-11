@@ -8,11 +8,11 @@ interface Image {
   filename: string;
   source: string;
   copyright: string;
-  dataset_release: string;
+  datasetRelease: string;
   description: string;
-  data_processing_stages: string;
+  dataProcessingStages: string;
   coordinates: string;
-  registration_date: string;
+  uploadDate: string;
   public: boolean;
 }
 
@@ -64,11 +64,11 @@ export function ExpandedImageView({ image, onClose }: ExpandedImageViewProps) {
         <div className="text-white mt-2 text-center">
           <p>Source: {image.source}</p>
           <p>Copyright: {image.copyright}</p>
-          <p>Dataset Release: {image.dataset_release}</p>
+          <p>Dataset Release: {image.datasetRelease}</p>
           <p>Description: {image.description}</p>
-          <p>Data Processing Stages: {image.data_processing_stages}</p>
+          <p>Data Processing Stages: {image.dataProcessingStages}</p>
           <p>Coordinates: {image.coordinates}</p>
-          <p>Registration Date: {image.registration_date}</p>
+          <p>Upload Date: {image.uploadDate}</p>
           <p>Public image: {image.public ? 'Yes' : 'No'}</p>
         </div>
       </div>
