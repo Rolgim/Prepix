@@ -51,7 +51,7 @@ def test_get_images_after_upload(client, sample_image, sample_metadata):
     assert image["description"] == sample_metadata["description"]
     assert image["dataProcessingStages"] == sample_metadata["dataProcessingStages"]
     assert image["coordinates"] == sample_metadata["coordinates"]
-    assert image["isPublic"] == sample_metadata["isPublic"]
+    assert not(image["isPublic"]) # sample_metadata["isPublic"] is "false", which should be converted to False
     assert image["uploadDate"] is not None
 
 
@@ -133,7 +133,7 @@ def test_images_ordering(client):
                 "description": f"Description {i}",
                 "dataProcessingStages":"VIS/NIR/MER",
                 "coordinates": f"tile_550{i}",
-                "isPublic": "false",
+                "isPublic": False,
                 }
         )
         filenames.append(response.json()["filename"])

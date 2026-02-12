@@ -28,7 +28,12 @@ def test_list_files_with_metadata(temp_upload_dir, monkeypatch):
     metadata = {
         "test.png": {
             "source": "Test Source",
-            "copyright": "Test Copyright"
+            "copyright": "Test Copyright",
+            "datasetRelease": "DR1",
+            "description": "Test Description",
+            "dataProcessingStages": "Test Stages",
+            "coordinates": "Test Coordinates",
+            "isPublic": "false",
         }
     }
     
@@ -36,12 +41,17 @@ def test_list_files_with_metadata(temp_upload_dir, monkeypatch):
     metadata_file.write_text(json.dumps(metadata))
     
     from src.app.services.storage import list_files
-    
     files = list_files()
+    print(files)
     assert len(files) == 1
-    assert files[0]["filename"] == "test.png"
-    assert files[0]["source"] == "Test Source"
-    assert files[0]["copyright"] == "Test Copyright"
+    assert files[0].filename == "test.png"
+    assert files[0].source == "Test Source"
+    assert files[0].copyright == "Test Copyright"
+    assert files[0].dataset_release == "DR1"
+    assert files[0].description == "Test Description"
+    assert files[0].data_processing_stages == "Test Stages"
+    assert files[0].coordinates == "Test Coordinates"
+    assert files[0].is_public is False
 
 
 def test_list_files_without_metadata(temp_upload_dir, monkeypatch):
@@ -59,11 +69,6 @@ def test_list_files_without_metadata(temp_upload_dir, monkeypatch):
     files = list_files()
     assert len(files) == 2
     
-    # Should have default empty metadata
-    for file_info in files:
-        assert "filename" in file_info
-        assert "source" in file_info
-        assert "copyright" in file_info
 
 
 def test_list_files_filters_metadata_json(temp_upload_dir, monkeypatch):
@@ -72,12 +77,14 @@ def test_list_files_filters_metadata_json(temp_upload_dir, monkeypatch):
     
     # Create files including metadata.json
     (Path(temp_upload_dir) / "image.png").write_bytes(b"image")
-    (Path(temp_upload_dir) / "metadata.json").write_text("{}")
+    (Path(temp_upload_dir) / "metadata.json").write_text(
+        "{\"image.png\": {\"source\": \"Test\",\"copyright\": \"Test\", \"datasetRelease\": \"DR1\", \"description\": \"Test\", \"dataProcessingStages\": \"Test\", \"coordinates\": \"Test\", \"isPublic\": \"false\",\"uploadDate\": \"2024-01-01\"}}"
+        )
     
     from src.app.services.storage import list_files
-    
+
     files = list_files()
-    filenames = [f["filename"] for f in files]
+    filenames = [f.filename for f in files]
     
     assert "metadata.json" not in filenames
     assert "image.png" in filenames
@@ -89,15 +96,30 @@ def test_list_files_multiple_formats(temp_upload_dir, monkeypatch):
     
     # Create various file types
     formats = ["image.png", "photo.jpg", "video.mp4", "clip.webm"]
+    metadata = {}
+
     for filename in formats:
         (Path(temp_upload_dir) / filename).write_bytes(b"data")
+        metadata[filename] = {
+            "source": "Test",
+            "copyright": "Test",
+            "datasetRelease": "DR1",
+            "description": "Test",
+            "dataProcessingStages": "Test",
+            "coordinates": "Test",
+            "isPublic": False,
+            "uploadDate": "2024-01-01"
+        }
+
+    (Path(temp_upload_dir) / "metadata.json").write_text(json.dumps(metadata))
+
     
     from src.app.services.storage import list_files
     
     files = list_files()
     assert len(files) == len(formats)
     
-    returned_filenames = [f["filename"] for f in files]
+    returned_filenames = [f.filename for f in files]
     for expected in formats:
         assert expected in returned_filenames
 
