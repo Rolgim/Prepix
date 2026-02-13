@@ -6,6 +6,12 @@ import { useState, useEffect } from 'react';
  * @property {string} filename - The unique filename of the image.
  * @property {string} source - The source of the image (e.g., where it was obtained).
  * @property {string} copyright - The copyright information for the image.
+ * @property {string} datasetRelease - The dataset release version associated with the image.
+ * @property {string} description - A description of the image content.
+ * @property {string} dataProcessingStages - The stages of data processing applied to the image.
+ * @property {string} coordinates - The coordinates related to the image (e.g., celestial coordinates).
+ * @property {boolean} isPublic - A boolean indicating if the image is public or private.
+ * @property {string} registrationDate - The date when the image was registered/uploaded.
  */
 interface Image {
   filename: string;
@@ -17,6 +23,15 @@ interface Image {
   coordinates: string;
   isPublic: boolean;
   registrationDate: string;
+}
+
+/**
+ * @interface UploadError
+ * @description Represents the structure of an error that can occur during the image upload process.
+ * */
+interface UploadError {
+  message: string;
+  detail?: any;
 }
 
 /**
@@ -85,15 +100,36 @@ export function useImageGallery() {
         method: "POST",
         body: formData,
       });
-      if (!res.ok) throw new Error("Upload failed");
+      if (!res.ok) {
+        let errorMessage = 'Upload failed (${res.status})';
+        try {
+          const errorData = await res.json();
+          
+          if (errorData.detail) {
+            if (typeof errorData.detail === 'string') {
+              errorMessage = errorData.detail;
+            } else if (errorData.detail.message) {
+              errorMessage = errorData.detail.message;
+            } else if (Array.isArray(errorData.detail)) {
+              // Pydantic validation errors 
+              errorMessage = errorData.detail
+                .map((err: any) => `${err.loc.join('.')}: ${err.msg}`)
+                .join(', \n');
+            }
+          }
+        } catch (e) {
+          // If parsing the error response fails, we fall back to the generic error message.
+        }
+        
+        throw new Error(errorMessage);
+      }
       
-      // Refresh the gallery to show the new image
       await fetchImages();
-      return true;
+      return { success: true, error: null };
     } catch (err) {
-      console.error("Upload failed", err);
-      setError(err instanceof Error ? err.message : "Upload failed");
-      return false;
+      const errorMessage = err instanceof Error ? err.message : "Upload failed";
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
     }
