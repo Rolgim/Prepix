@@ -28,9 +28,42 @@ def get_image_by_filename(db: Session, filename: str) -> Optional[ImageMetadataM
     return db.query(ImageMetadataModel).filter(ImageMetadataModel.filename == filename).first()
 
 
+def get_filtered_images(
+    db: Session,
+    source: Optional[str] = None,
+    copyright: Optional[str] = None,
+    dataset_release: Optional[str] = None,
+    description: Optional[str] = None,
+    data_processing_stages: Optional[str] = None,
+    coordinates: Optional[str] = None,
+    is_public: Optional[bool] = None,
+    skip: int = 0,
+    limit: int = 100
+) -> List[ImageMetadataModel]:
+    """Get filtered image metadata entries, ordered by upload date descending"""
+    query = db.query(ImageMetadataModel)
+
+    if source:
+        query = query.filter(ImageMetadataModel.source.ilike(f"%{source}%"))
+    if copyright:
+        query = query.filter(ImageMetadataModel.copyright.ilike(f"%{copyright}%"))
+    if dataset_release:
+        query = query.filter(ImageMetadataModel.dataset_release.ilike(f"%{dataset_release}%"))
+    if description:
+        query = query.filter(ImageMetadataModel.description.ilike(f"%{description}%"))
+    if data_processing_stages:
+        query = query.filter(ImageMetadataModel.data_processing_stages.ilike(f"%{data_processing_stages}%"))
+    if coordinates:
+        query = query.filter(ImageMetadataModel.coordinates.ilike(f"%{coordinates}%"))
+    if is_public is not None:
+        query = query.filter(ImageMetadataModel.is_public == is_public)
+
+    return query.order_by(desc(ImageMetadataModel.upload_date)).offset(skip).limit(limit).all()
+
+
 def get_all_images(db: Session, skip: int = 0, limit: int = 100) -> List[ImageMetadataModel]:
     """Get all image metadata entries, ordered by upload date descending"""
-    return db.query(ImageMetadataModel).order_by(desc(ImageMetadataModel.upload_date)).offset(skip).limit(limit).all()
+    return get_filtered_images(db, skip=skip, limit=limit)
 
 
 def get_public_images(db: Session, skip: int = 0, limit: int = 100) -> List[ImageMetadataModel]:

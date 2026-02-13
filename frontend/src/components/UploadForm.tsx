@@ -222,7 +222,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
             className="block text-sm font-medium"
             style={{ color: 'var(--text-primary)' }}
           >
-            Coordonnées
+            Coordinates
           </label>
           <Input
             id="coordinates-input"

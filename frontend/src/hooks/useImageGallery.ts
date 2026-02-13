@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import { SearchFilters } from '../components/SearchForm';
 /**
  * @interface Image
  * @description Represents the structure of an image object with its metadata.
@@ -56,11 +56,28 @@ export function useImageGallery() {
    * @description Fetches the list of images from the `/api/images` endpoint
    * and updates the component state.
    */
-  const fetchImages = async () => {
+  const fetchImages = async (filters?: SearchFilters) => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/images");
+      const params = new URLSearchParams();
+
+      if (filters) {
+        if (filters.source) params.append('source', filters.source);
+        if (filters.copyright) params.append('copyright', filters.copyright);
+        if (filters.datasetRelease) params.append('datasetRelease', filters.datasetRelease);
+        if (filters.description) params.append('description', filters.description);
+        if (filters.dataProcessingStages) params.append('dataProcessingStages', filters.dataProcessingStages);
+        if (filters.coordinates) params.append('coordinates', filters.coordinates);
+        if (filters.isPublic !== null && filters.isPublic !== undefined) {
+          params.append('isPublic', String(filters.isPublic));
+        }
+      }
+      
+      const url = `/api/images${params.toString() ? '?' + params.toString() : ''}`;
+
+      const res = await fetch(url);
+
       if (!res.ok) throw new Error("Failed to fetch images");
       const data: Image[] = await res.json();
       setImages(data);
@@ -135,6 +152,14 @@ export function useImageGallery() {
     }
   };
 
+  const searchImages = async (filters: SearchFilters) => {
+    await fetchImages(filters);
+  };
+
+  const resetSearch = async () => {
+    await fetchImages();
+  };
+
   // The `useEffect` hook calls `fetchImages` once when the component mounts
   // to populate the gallery initially.
   useEffect(() => {
@@ -146,6 +171,7 @@ export function useImageGallery() {
     isLoading,
     error,
     uploadImage,
-    refreshImages: fetchImages,
+    searchImages,
+    resetSearch,
   };
 }

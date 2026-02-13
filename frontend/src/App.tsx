@@ -11,13 +11,15 @@ import { useToast } from "./hooks/useToast";
  * and manages the application's core state by using the `useImageGallery` hook.
  */
 export default function App() {
-  const { images, isLoading, uploadImage } = useImageGallery();
+  const { images, isLoading, uploadImage, searchImages, resetSearch } = useImageGallery();
   const { toasts, removeToast, showSuccess, showError } = useToast();
 
   return (
     <div className="min-h-screen flex" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <Sidebar 
         onUpload={uploadImage}  
+        onSearch={searchImages}
+        onResetSearch={resetSearch}
         isLoading={isLoading}
         onSuccess={showSuccess}
         onError={showError}

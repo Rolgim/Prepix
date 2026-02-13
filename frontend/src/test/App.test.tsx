@@ -64,7 +64,7 @@ describe('App Component - Integration Tests', () => {
       expect(screen.getByPlaceholderText('Coordinates')).toBeInTheDocument();
       expect(screen.getByLabelText(/public data/i)).toBeInTheDocument();
       expect(screen.getByRole('checkbox')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /upload/i })).toBeInTheDocument();
+      expect(screen.getAllByRole('button', { name: /upload/i })[1]).toBeInTheDocument(); /* 0 is the button in the header, 1 is the one in the form */
     });
   });
 
@@ -148,7 +148,7 @@ describe('App Component - Integration Tests', () => {
     await user.upload(fileInput, file);
 
     // Simulate form submission.
-    const submitButton = screen.getByRole('button', { name: /upload/i });
+    const submitButton = screen.getAllByRole('button', { name: /upload/i })[1];
     await user.click(submitButton);
 
     // Wait for the gallery to be updated with the new image's data.
