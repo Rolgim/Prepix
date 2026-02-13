@@ -2,11 +2,22 @@ import { DarkModeToggle } from "./DarkModeToggle";
 import { UploadForm } from "./UploadForm";
 
 interface SidebarProps {
-  onUpload: (file: File, source: string, copyright: string, datasetRelease: string, description: string, isPublic: boolean, dataProcessingStages: string, coordinates: string) => Promise<boolean>;
+  onUpload: (
+    file: File,
+    source: string,
+    copyright: string,
+    datasetRelease: string,
+    description: string,
+    dataProcessingStages: string,
+    coordinates: string,
+    isPublic: boolean
+  ) => Promise<{ success: boolean; error: string | null }>;
   isLoading?: boolean;
+  onSuccess?: (message: string) => void;
+  onError?: (message: string) => void;
 }
 
-export function Sidebar({ onUpload, isLoading }: SidebarProps) {
+export function Sidebar({ onUpload, isLoading, onSuccess, onError }: SidebarProps) {
   return (
     <div
       className="w-96 p-4 flex flex-col gap-6"
@@ -24,7 +35,12 @@ export function Sidebar({ onUpload, isLoading }: SidebarProps) {
       </div>
 
       {/* Upload Form */}
-      <UploadForm onUpload={onUpload} isLoading={isLoading} />
+      <UploadForm 
+        onUpload={onUpload} 
+        isLoading={isLoading}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
 
       {/* Footer Logos */}
       <div className="flex items-center justify-between mt-auto">

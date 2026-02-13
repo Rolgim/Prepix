@@ -10,8 +10,19 @@ import { Input } from "./Input";
  * @property {boolean} [isLoading] - An optional boolean to indicate if an upload is currently in progress.
  */
 interface UploadFormProps {
-  onUpload: (file: File, source: string, copyright: string, datasetRelease: string, description: string, dataProcessingStages: string, coordinates: string, isPublic: boolean) => Promise<boolean>;
+  onUpload: (
+    file: File, 
+    source: string, 
+    copyright: string, 
+    datasetRelease: string, 
+    description: string, 
+    dataProcessingStages: string, 
+    coordinates: string, 
+    isPublic: boolean
+  ) => Promise<{ success: boolean; error: string | null }>;
   isLoading?: boolean;
+  onSuccess?: (message: string) => void;
+  onError?: (message: string) => void;
 }
 
 /**
@@ -21,7 +32,7 @@ interface UploadFormProps {
  * @param {UploadFormProps} props - The props for the component.
  * @returns {JSX.Element} A form wrapped in a card.
  */
-export function UploadForm({ onUpload, isLoading }: UploadFormProps) {
+export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFormProps) {
   const [file, setFile] = useState<File | null>(null);
   const [source, setSource] = useState("");
   const [copyright, setCopyright] = useState("");
@@ -40,12 +51,24 @@ export function UploadForm({ onUpload, isLoading }: UploadFormProps) {
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file) return;
+    if (!file) {
+      onError?.("Please select a file");
+      return;
+    }
 
-    const success = await onUpload(file, source, copyright, datasetRelease, description, dataProcessingStages, coordinates, isPublic);
+    const result = await onUpload(
+      file, 
+      source, 
+      copyright, 
+      datasetRelease, 
+      description, 
+      dataProcessingStages, 
+      coordinates, 
+      isPublic
+    );
     
     // If the upload was successful, reset the form to its initial state.
-    if (success) {
+    if (result.success) {
       setFile(null);
       setSource("");
       setCopyright("");
@@ -55,9 +78,13 @@ export function UploadForm({ onUpload, isLoading }: UploadFormProps) {
       setCoordinates("");
       setIsPublic(false);
       
-      // A simple way to clear the file input's displayed value.
+      // Reset file input
       const fileInput = document.getElementById('file-input') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
+
+      onSuccess?.("Image uploaded successfully");
+    } else {
+      onError?.(result.error || "Upload failed");
     }
   };
 

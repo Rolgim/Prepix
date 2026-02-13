@@ -1,6 +1,8 @@
 import { Sidebar } from "./components/Sidebar";
 import { ImageGallery } from "./components/ImageGallery";
+import { ToastContainer } from "./components/Toast";
 import { useImageGallery } from "./hooks/useImageGallery";
+import { useToast } from "./hooks/useToast";
 
 /**
  * @file App.tsx
@@ -9,18 +11,23 @@ import { useImageGallery } from "./hooks/useImageGallery";
  * and manages the application's core state by using the `useImageGallery` hook.
  */
 export default function App() {
-  // The useImageGallery hook provides all necessary state and logic for the gallery.
   const { images, isLoading, uploadImage } = useImageGallery();
+  const { toasts, removeToast, showSuccess, showError } = useToast();
 
   return (
     <div className="min-h-screen flex" style={{ backgroundColor: 'var(--bg-primary)' }}>
-      {/* The Sidebar contains the upload form and other controls. */}
-      <Sidebar onUpload={uploadImage} isLoading={isLoading} />
+      <Sidebar 
+        onUpload={uploadImage}  
+        isLoading={isLoading}
+        onSuccess={showSuccess}
+        onError={showError}
+      />
       
-      {/* The main content area displays the image gallery. */}
       <div className="flex-1 p-6 overflow-y-auto">
         <ImageGallery images={images} isLoading={isLoading} />
       </div>
+
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
     </div>
   );
 }
