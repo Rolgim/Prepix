@@ -1,8 +1,7 @@
-from pydantic import BaseModel, Field, field_validator, ValidationError
+from pydantic import BaseModel, Field, field_validator, ValidationError, ConfigDict
 from fastapi import HTTPException
 from fastapi import Form
-from datetime import date
-from typing import Optional
+from datetime import datetime
 
 
 class ImageMetadata(BaseModel):
@@ -28,11 +27,11 @@ class ImageMetadata(BaseModel):
     )
     coordinates: str = Field(..., min_length=1, max_length=100, description="Astronomical coordinates (ex: RA: 00h42m44s, DEC: +41°16'09\") or tile name")
     is_public: bool = Field(..., alias="isPublic", description="Privacy status of the image (true for public, false for private)")
-    upload_date: str = Field(default_factory=lambda: date.today().isoformat(), description="Upload date in ISO format (YYYY-MM-DD)", alias="uploadDate")
+    upload_date: datetime = Field(default_factory=lambda: datetime.utcnow, description="Upload date in ISO format (YYYY-MM-DD)", alias="uploadDate")
     
-    class Config:
-        populate_by_name = True  # Allow population by field name or alias for compatibility with frontend
-        json_schema_extra = {
+    model_config = ConfigDict(
+        populate_by_name=True,
+        json_schema_extra={  # Allow population by field name or alias for compatibility with frontend
             "example": {
                 "filename": "galaxy_m31.png",
                 "source": "M31",
@@ -44,12 +43,14 @@ class ImageMetadata(BaseModel):
                 "isPublic": True,
                 "uploadDate": "2026-02-11"
             }
-        }
+        })
 
 
 class ImageMetadataCreate(BaseModel):
     """Schema for creating new image metadata with validation"""
-    
+
+    model_config = ConfigDict(populate_by_name=True)
+
     source: str = Field(..., min_length=1, max_length=200)
     copyright: str = Field(..., min_length=1, max_length=200)
     dataset_release: str = Field(..., alias="datasetRelease", min_length=1, max_length=50)
@@ -70,9 +71,6 @@ class ImageMetadataCreate(BaseModel):
             if v.lower() in ('false', '0', 'no'):
                 return False
         raise ValueError(f'Invalid boolean value: {v}')
-    
-    class Config:
-        populate_by_name = True
     
     @classmethod
     def as_form(

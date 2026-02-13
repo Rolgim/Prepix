@@ -1,11 +1,4 @@
 services:
-  backend:
-    build: ./backend
-    volumes:
-      - ./storage/uploads:/storage/uploads
-    expose:
-      - "8000"
-
   nginx:
     build: .
     ports:
@@ -14,3 +7,40 @@ services:
       - ./storage/uploads:/storage/uploads
     depends_on:
       - backend
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    volumes:
+      - ./storage/uploads:/storage/uploads
+    env_file:
+      - ./backend/.env 
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  database:
+    image: postgres:16-alpine
+    env_file:
+      - ./backend/.env  # Utiliser le même .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-prepix_user} -d ${POSTGRES_DB:-prepix_db}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

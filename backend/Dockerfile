@@ -1,14 +1,13 @@
 FROM python:3.12-slim
 
-
 WORKDIR /app
 
+RUN pip install uv
 
-COPY pyproject.toml ./
-RUN pip install --upgrade pip && pip install fastapi uvicorn python-multipart
+COPY pyproject.toml uv.lock* ./
 
+RUN uv sync --no-dev
 
 COPY src ./src
 
-
-CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv", "run", "uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -38,40 +38,44 @@ export function ExpandedImageView({ image, onClose }: ExpandedImageViewProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-      onClick={onClose}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 overflow-y-auto"
+    onClick={onClose}
+  >
+    <div
+      className="relative max-w-4xl w-full p-4 my-8"
+      onClick={(e) => e.stopPropagation()}
     >
-      <div className="relative max-w-4xl max-h-full p-4" onClick={(e) => e.stopPropagation()}>
-        {isVideo ? (
-          <video
-            src={`/uploads/${image.filename}`}
-            controls
-            autoPlay
-            className="w-full h-auto"
-            style={{ maxHeight: '80vh' }}
-          />
-        ) : (
-          <img
-            src={`/uploads/${image.filename}`}
-            alt={image.filename}
-            className="w-full h-auto"
-            style={{ maxHeight: '80vh' }}
-          />
-        )}
-        <div className="text-white mt-2 text-center">
-          <p>Source: {image.source}</p>
-          <p>Copyright: {image.copyright}</p>
-          <p>Dataset Release: {image.datasetRelease}</p>
-          <p>Description: {image.description}</p>
-          <p>Data Processing Stages: {image.dataProcessingStages}</p>
-          <p>Coordinates: {image.coordinates}</p>
-          <p>Upload Date: {image.uploadDate}</p>
-          <p>Public image: {image.public ? 'Yes' : 'No'}</p>
-        </div>
+      {isVideo ? (
+        <video
+          src={`/uploads/${image.filename}`}
+          controls
+          autoPlay
+          className="w-full h-auto"
+          style={{ maxHeight: "80vh" }}
+        />
+      ) : (
+        <img
+          src={`/uploads/${image.filename}`}
+          alt={image.filename}
+          className="w-full h-auto"
+          style={{ maxHeight: "80vh" }}
+        />
+      )}
+
+      <div className="text-white mt-2 text-center">
+        <p>Source: {image.source}</p>
+        <p>Copyright: {image.copyright}</p>
+        <p>Dataset Release: {image.datasetRelease}</p>
+        <p>Description: {image.description}</p>
+        <p>Data Processing Stages: {image.dataProcessingStages}</p>
+        <p>Coordinates: {image.coordinates}</p>
+        <p>Upload Date: {image.uploadDate}</p>
+        <p>Public image: {image.public ? "Yes" : "No"}</p>
       </div>
-    </motion.div>
+    </div>
+  </motion.div>
   );
 }

@@ -1,4 +1,3 @@
-# backend/tests/test_images.py
 import pytest
 from io import BytesIO
 
