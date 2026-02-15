@@ -100,7 +100,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
         <form onSubmit={handleSubmit} className="space-y-4">
           <label 
             htmlFor="file-input" 
-            className="block text-sm font-medium"
+            className="block text-sm font-medium mb-1"
             style={{ color: 'var(--text-primary)' }}
           >
             File
@@ -119,7 +119,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
 
           <label 
             htmlFor="source-input" 
-            className="block text-sm font-medium"
+            className="block text-sm font-medium mb-1"
             style={{ color: 'var(--text-primary)' }}
           >
             Source
@@ -139,7 +139,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
 
           <label 
             htmlFor="copyright-input" 
-            className="block text-sm font-medium"
+            className="block text-sm font-medium mb-1"
             style={{ color: 'var(--text-primary)' }}
           >
             Copyright
@@ -159,7 +159,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
 
           <label 
             htmlFor="dataset-release-input" 
-            className="block text-sm font-medium"
+            className="block text-sm font-medium mb-1"
             style={{ color: 'var(--text-primary)' }}
           >
             Dataset Release
@@ -179,7 +179,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
 
           <label 
             htmlFor="description-input" 
-            className="block text-sm font-medium"
+            className="block text-sm font-medium mb-1"
             style={{ color: 'var(--text-primary)' }}
           >
             Description
@@ -199,7 +199,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
 
           <label 
             htmlFor="data-processing-stages-input" 
-            className="block text-sm font-medium"
+            className="block text-sm font-medium mb-1"
             style={{ color: 'var(--text-primary)' }}
           >
             Data Processing Stages
@@ -219,7 +219,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
 
           <label 
             htmlFor="coordinates-input" 
-            className="block text-sm font-medium"
+            className="block text-sm font-medium mb-1"
             style={{ color: 'var(--text-primary)' }}
           >
             Coordinates
@@ -239,7 +239,7 @@ export function UploadForm({ onUpload, isLoading, onSuccess, onError }: UploadFo
           <div className="flex items-center justify-between">
             <label 
               htmlFor="public-private-checkbox" 
-              className="block text-sm font-medium"
+              className="block text-sm font-medium mb-1"
               style={{ color: 'var(--text-primary)' }}
             >
               Public data
