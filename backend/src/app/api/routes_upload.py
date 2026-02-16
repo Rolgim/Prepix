@@ -6,7 +6,6 @@ from ..database import get_db
 from ..database.crud import create_image_metadata
 from ..services.storage import save_file
 from ..models.schemas import ImageMetadataCreate, ImageMetadataResponse
-
 router = APIRouter()
 
 

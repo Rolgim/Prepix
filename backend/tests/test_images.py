@@ -54,11 +54,11 @@ def test_get_images_after_upload(client, sample_image, sample_metadata):
     assert image["uploadDate"] is not None
 
 
-def test_get_images_multiple_uploads(client, sample_metadata):
+def test_get_images_multiple_uploads(client, sample_metadata, fake_png):
     """Test getting multiple images"""
     # Upload 3 different images
     for i in range(3):
-        file_content = BytesIO(f"image {i}".encode())
+        file_content = fake_png()
         client.post(
             "/upload",
             files={"file": (f"test_{i}.png", file_content, "image/png")},
@@ -116,12 +116,12 @@ def test_images_return_correct_structure(client, sample_image, sample_metadata):
         assert field in image, f"Missing required field: {field}"
 
 
-def test_images_ordering(client):
+def test_images_ordering(client, fake_png):
     """Test that images are returned in consistent order"""
     # Upload multiple images
     filenames = []
     for i in range(5):
-        file_content = BytesIO(f"image {i}".encode())
+        file_content = fake_png()
         response = client.post(
             "/upload",
             files={"file": (f"test_{i}.png", file_content, "image/png")},

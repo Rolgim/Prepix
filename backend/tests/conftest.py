@@ -2,6 +2,8 @@ import pytest
 import tempfile
 import shutil
 import os
+from io import BytesIO
+from PIL import Image
 from pathlib import Path
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -100,3 +102,15 @@ def sample_metadata():
         "coordinates": "Test Coordinates",
         "isPublic": "false"
     }
+
+
+@pytest.fixture
+def fake_png():
+    def _fake_png():
+        img = Image.new("RGB", (10, 10), color="red")
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+        buffer.seek(0)
+        return buffer
+
+    return _fake_png

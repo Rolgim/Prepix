@@ -13,6 +13,7 @@ dependencies = [
     "pydantic>=2.12.5",
     "psycopg2-binary>=2.9.11",
     "python-dotenv>=1.2.1",
+    "python-magic>=0.4.27",
 ]
 
 [project.optional-dependencies]
