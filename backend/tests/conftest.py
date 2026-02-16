@@ -10,6 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
+os.environ["TESTING"] = "1"
 # Use in-memory SQLite database for testing
 TEST_DATABASE_URL = "sqlite:///:memory:"
 os.environ["DATABASE_URL"] = TEST_DATABASE_URL
