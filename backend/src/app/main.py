@@ -16,7 +16,7 @@ TESTING = os.environ.get("TESTING") == "1"
 if TESTING:
     limiter = Limiter(key_func=lambda: "test")
 else:
-    limiter = Limiter(key_func=get_remote_address, default_limits=["1/minute"])
+    limiter = Limiter(key_func=get_remote_address, default_limits=["20/minute"])
 
 app = FastAPI(title="Prepix API")
 
