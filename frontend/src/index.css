@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Variables CSS pour dark mode */
 :root {
   --bg-primary: rgb(243, 244, 246);
   --bg-secondary: rgb(255, 255, 255);
