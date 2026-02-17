@@ -7,6 +7,7 @@ Euclid Pretty Pics Portal. A full-stack application for managing and displaying 
 - **Frontend:** React, Vite, Tailwind CSS
 - **Backend:** Python, FastAPI, SQLAlchemy, Alembic
 - **Database:** PostgreSQL
+- **Dependency Management:** uv (Python), npm (Node.js)
 - **Testing:** Vitest (frontend), Pytest (backend)
 - **Containerization:** Docker, Docker Compose
 - **Web Server:** Nginx
@@ -19,6 +20,7 @@ Euclid Pretty Pics Portal. A full-stack application for managing and displaying 
 - Make
 - Python 3.12+
 - Node.js and npm
+- uv (for Python dependency management)
 
 ### Installation
 
@@ -35,11 +37,14 @@ Euclid Pretty Pics Portal. A full-stack application for managing and displaying 
     ```
     Update the `backend/.env` file with your database credentials and other settings.
 
-3.  **Install dependencies:**
+    > **Note:** This `.env` file is essential for running the application with Docker Compose. The `docker-compose.yml` file is configured to load this file and provide the necessary environment variables (like database credentials) to the application containers.
+
+3.  **Install dependencies (for local development):**
     Use the `make` command to install all backend and frontend dependencies.
     ```bash
     make install
     ```
+    > **Note:** This step is recommended for setting up a complete development environment. Installing dependencies locally is crucial for IDE support (e.g., autocompletion, linting) and for running tests or other commands directly on your host machine. If you only intend to run the application via `docker-compose up`, this step is not strictly required, as dependencies are managed within the Docker containers.
 
 ## Running the Application
 

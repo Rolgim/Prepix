@@ -7,7 +7,7 @@ help:
 
 install: ## Install all test dependencies
 	@echo "Installing backend dependencies..."
-	cd backend && pip install -e ".[test]"
+	cd backend && uv pip sync --all-extras
 	@echo "Installing frontend dependencies..."
 	cd frontend && npm install
 	@echo "Installation complete!"
