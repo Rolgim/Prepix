@@ -1,6 +1,6 @@
 # Prepix
 
-Astro Pretty Pics Portal. A full-stack application for managing and displaying images.
+Euclid Pretty Pics Portal. A full-stack application for managing and displaying images.
 
 ## Tech Stack
 
