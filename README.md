@@ -5,22 +5,28 @@ Pretty Pics Portal. A full-stack application for managing and displaying images.
 ## Overview
 
 ### Dark/Light modes
-
-<img width="500" height="259" alt="image" src="https://github.com/user-attachments/assets/1e2f7b20-50d9-4f4a-bb2c-4fc403520620" />
-<img width="500" height="259" alt="image" src="https://github.com/user-attachments/assets/dd6c65b6-31b0-4938-bd97-e8bdaba37895" />
+<p align="center">
+    <img width="250" height="129" alt="image" src="https://github.com/user-attachments/assets/1e2f7b20-50d9-4f4a-bb2c-4fc403520620" />
+    <img width="250" height="129" alt="image" src="https://github.com/user-attachments/assets/dd6c65b6-31b0-4938-bd97-e8bdaba37895" />
+</p>
 
 ### Upload/Search panels
-<img width="500" height="259" alt="image" src="https://github.com/user-attachments/assets/fce4196d-338d-475d-96f4-2ddd691e74f5" />
-<img width="500" height="259" alt="image" src="https://github.com/user-attachments/assets/dc38c653-0741-4ee8-a4c5-9a1d83afa36a" />
+<p align="center">
+    <img width="250" height="129" alt="image" src="https://github.com/user-attachments/assets/fce4196d-338d-475d-96f4-2ddd691e74f5" />
+    <img width="250" height="129" alt="image" src="https://github.com/user-attachments/assets/dc38c653-0741-4ee8-a4c5-9a1d83afa36a" />
+</p>
 
 ### Toasts
-<img width="500" height="259" alt="image" src="https://github.com/user-attachments/assets/37cbb6fe-f54a-4776-8811-f168071af749" />
-<img width="500" height="259" alt="image" src="https://github.com/user-attachments/assets/6a236396-3758-4cc0-9139-a357d6d6a772" />
-
+<p align="center">
+    <img width="250" height="129" alt="image" src="https://github.com/user-attachments/assets/37cbb6fe-f54a-4776-8811-f168071af749" />
+    <img width="250" height="129" alt="image" src="https://github.com/user-attachments/assets/6a236396-3758-4cc0-9139-a357d6d6a772" />
+</p>
 
 ### Expanded visualization
-<img width="500" height="259" alt="image" src="https://github.com/user-attachments/assets/dfc71fce-013f-43fd-87ef-5fd9da596f21" />
-<img width="500" height="259" alt="image" src="https://github.com/user-attachments/assets/b691b613-04e3-44ef-9337-47a85b816588" />
+<p align="center">
+    <img width="250" height="129" alt="image" src="https://github.com/user-attachments/assets/dfc71fce-013f-43fd-87ef-5fd9da596f21" />
+    <img width="250" height="129" alt="image" src="https://github.com/user-attachments/assets/b691b613-04e3-44ef-9337-47a85b816588" />
+</p>
 
 ## Tech Stack
 
