@@ -8,7 +8,11 @@
   <img src="https://img.shields.io/badge/docker--compose-supported-blue" />
   <img src="https://img.shields.io/badge/license-Apache_2.0-orange" />
 </p>
-Pretty Pics Portal. A full-stack application for managing and displaying images.
+
+<p align="center"> 
+  Pretty Pics Portal.
+  A full-stack application for managing and displaying images. 
+</p>
 
 ## Overview
 
