@@ -6,9 +6,8 @@
   <img src="https://img.shields.io/badge/server-nginx-black" />
   <img src="https://img.shields.io/badge/packaging-uv-purple" />
   <img src="https://img.shields.io/badge/docker--compose-supported-blue" />
-  <img src="https://img.shields.io/github/license/Rolgim/Prepix" />
+  <img src="https://img.shields.io/badge/license-Apache_2.0-orange" />
 </p>
-
 Pretty Pics Portal. A full-stack application for managing and displaying images.
 
 ## Overview
