@@ -1,4 +1,4 @@
-# Prepix
+# Prepix 🔭
 
 <p align="center">
   <img src="https://img.shields.io/badge/backend-Python-blue" />
